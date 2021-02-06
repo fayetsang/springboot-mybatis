@@ -2,8 +2,6 @@ package com.fftest.study.service;
 
 import com.fftest.study.pojo.User;
 
-import java.util.List;
-
 
 public interface UserService {
 

@@ -1,7 +1,14 @@
 package com.fftest.study.pojo;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import java.io.Serializable;
 
+@Getter
+@Setter
+@ToString
 public class Counter implements Serializable {
 
     static final long serialVersionUID = 1340400917744356654L;
@@ -9,19 +16,4 @@ public class Counter implements Serializable {
     private String id;
     private Integer count;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Integer getCount() {
-        return count;
-    }
-
-    public void setCount(Integer count) {
-        this.count = count;
-    }
 }

@@ -1,9 +1,8 @@
 package com.fftest.study.controller;
 
 import com.fftest.study.service.CounterService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +13,8 @@ import java.util.function.Consumer;
 
 @Controller
 @RequestMapping("/counter")
+@Slf4j
 public class CounterController {
-
-    private final static Logger logger = LoggerFactory.getLogger(CounterController.class);
 
     @Autowired
     private CounterService counterService;
@@ -29,7 +27,7 @@ public class CounterController {
             counter = counterService.getCounter(id);
             status = HttpStatus.OK;
         }catch (Exception e) {
-            logger.error("exception happen while getCounterById", e);
+            log.error("exception happen while getCounterById", e);
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return ResponseEntity.status(status).body(counter);
@@ -57,7 +55,7 @@ public class CounterController {
                 status = HttpStatus.NO_CONTENT;
             }
         }catch (Exception e) {
-            logger.error("exception happen while modifyCounter", e);
+            log.error("exception happen while modifyCounter", e);
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
        return status;

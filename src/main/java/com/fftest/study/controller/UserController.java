@@ -2,9 +2,8 @@ package com.fftest.study.controller;
 
 import com.fftest.study.pojo.User;
 import com.fftest.study.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/user")
+@Slf4j
 public class UserController {
 
-    private final static Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     private UserService userService;
@@ -31,7 +30,7 @@ public class UserController {
                 status = HttpStatus.CREATED;
             }
         } catch (Exception e) {
-            logger.error("exception happen while addUser", e);
+            log.error("exception happen while addUser", e);
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return ResponseEntity.status(status).build();
@@ -48,7 +47,7 @@ public class UserController {
                 status = HttpStatus.BAD_REQUEST;
             }
         } catch (Exception e) {
-            logger.error("exception happen while deleteUserById", e);
+            log.error("exception happen while deleteUserById", e);
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return ResponseEntity.status(status).build();
@@ -70,7 +69,7 @@ public class UserController {
                 status = HttpStatus.BAD_REQUEST;
             }
         } catch (Exception e) {
-            logger.error("exception happen while findUserById", e);
+            log.error("exception happen while findUserById", e);
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return ResponseEntity.status(status).body(user);
@@ -93,7 +92,7 @@ public class UserController {
                 status = HttpStatus.NO_CONTENT;
             }
         } catch (Exception e) {
-            logger.error("exception happen while updateUserStatus", e);
+            log.error("exception happen while updateUserStatus", e);
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return ResponseEntity.status(status).build();

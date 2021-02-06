@@ -1,13 +1,12 @@
 package com.fftest.study.controller;
 
 import com.google.gson.Gson;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.ListTopicsResult;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.admin.TopicListing;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +20,8 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/topic")
+@Slf4j
 public class TopicController {
-    private final static Logger logger = LoggerFactory.getLogger(TopicController.class);
 
     @Autowired
     private AdminClient adminClient;
@@ -38,13 +37,13 @@ public class TopicController {
             if (StringUtils.isBlank(topicName) || partitions == null || replicationFactor == null) {
                 status = HttpStatus.BAD_REQUEST;
             } else {
-                logger.info("create topic, topicName={}, partitions={}, replicationFactor={}",
+                log.info("create topic, topicName={}, partitions={}, replicationFactor={}",
                         topicName, partitions, replicationFactor);
                 adminClient.createTopics(Arrays.asList(new NewTopic(topicName, partitions, replicationFactor)));
                 status = HttpStatus.CREATED;
             }
         } catch (Exception e) {
-            logger.error("exception happen while createTopic", e);
+            log.error("exception happen while createTopic", e);
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return ResponseEntity.status(status).build();
@@ -62,7 +61,7 @@ public class TopicController {
             }
             status = HttpStatus.OK;
         } catch (Exception e) {
-            logger.error("exception happen while getTopics", e);
+            log.error("exception happen while getTopics", e);
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return ResponseEntity.status(status).body(gson.toJson(resultList));
@@ -75,12 +74,12 @@ public class TopicController {
             if (StringUtils.isBlank(topicName)) {
                 status = HttpStatus.BAD_REQUEST;
             } else {
-                logger.info("delete topic: {}", topicName);
+                log.info("delete topic: {}", topicName);
                 adminClient.deleteTopics(Arrays.asList(topicName));
                 status = HttpStatus.NO_CONTENT;
             }
         } catch (Exception e) {
-            logger.error("exception happen while getTopics", e);
+            log.error("exception happen while getTopics", e);
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return ResponseEntity.status(status).build();

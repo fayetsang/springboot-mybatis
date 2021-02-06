@@ -2,8 +2,7 @@ package com.fftest.study.service.impl;
 
 import com.fftest.study.service.CounterService;
 import com.fftest.study.service.NoticeService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -11,9 +10,8 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 
 @Service
+@Slf4j
 public class CounterServiceImpl implements CounterService {
-
-    private static final Logger logger = LoggerFactory.getLogger(CounterServiceImpl.class);
 
     private static final Integer RAISE_NOTIFICATION_THRESHOLD = 3;
 
@@ -27,8 +25,8 @@ public class CounterServiceImpl implements CounterService {
 
     @Override
     public Integer getCounter(String id) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("enter getCounter, id: {}", id);
+        if (log.isDebugEnabled()) {
+            log.debug("enter getCounter, id: {}", id);
         }
         Integer count = (Integer) redisTemplate.opsForValue().get(id);
         return count!=null?count:0;
@@ -36,16 +34,16 @@ public class CounterServiceImpl implements CounterService {
 
     @Override
     public void increaseCounter(String id) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("enter increaseCounter, id: {}", id);
+        if (log.isDebugEnabled()) {
+            log.debug("enter increaseCounter, id: {}", id);
         }
         Integer count = getCounter(id);
         redisTemplate.opsForValue().set(id, ++count);
         redisTemplate.expire(id, Duration.ofMinutes(COUNTER_EXPIRE_MINS));
 
         if (count >= RAISE_NOTIFICATION_THRESHOLD) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("d: {}, count: {}, begin to raise notification.", id, count);
+            if (log.isDebugEnabled()) {
+                log.debug("d: {}, count: {}, begin to raise notification.", id, count);
             }
             noticeService.sendNotification("NOTIFICATION:"+id+":"+count);
         }
@@ -53,8 +51,8 @@ public class CounterServiceImpl implements CounterService {
 
     @Override
     public void deleteCounter(String id) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("enter deleteCounter, id: {}", id);
+        if (log.isDebugEnabled()) {
+            log.debug("enter deleteCounter, id: {}", id);
         }
         redisTemplate.delete(id);
     }
