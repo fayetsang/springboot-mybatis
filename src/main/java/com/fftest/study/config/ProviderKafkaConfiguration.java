@@ -19,7 +19,6 @@ public class ProviderKafkaConfiguration {
     @Bean
     public KafkaAdmin kafkaAdmin() {
         Map<String, Object> props = new HashMap<>();
-        //配置Kafka实例的连接地址
         props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootStrapServer);
         KafkaAdmin admin = new KafkaAdmin(props);
         return admin;

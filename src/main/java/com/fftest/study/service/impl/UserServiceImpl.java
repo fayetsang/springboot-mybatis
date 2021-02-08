@@ -1,5 +1,6 @@
 package com.fftest.study.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.fftest.study.mapper.UserMapper;
 import com.fftest.study.pojo.User;
 import com.fftest.study.service.UserService;
@@ -17,17 +18,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserById(Long id) {
-        return userMapper.findUserById(id);
+        return userMapper.selectById(id);
     }
 
     @Override
     public void updateUserStatus(User user){
-        userMapper.updateUserStatus(user);
+        UpdateWrapper<User> userUpdateWrapper = new UpdateWrapper<>();
+        userUpdateWrapper.eq("id", user.getId());
+        User updateUser = new User();
+        updateUser.setStatus(user.getStatus());
+        userMapper.update(updateUser, userUpdateWrapper);
     }
 
     @Override
     public void deleteUserById(Long id) {
-        userMapper.deleteUserById(id);
+        userMapper.deleteById(id);
     }
 
     @Override
@@ -42,6 +47,6 @@ public class UserServiceImpl implements UserService {
             }
             user.setStatus("inactive");
         }
-        userMapper.addUser(user);
+        userMapper.insert(user);
     }
 }

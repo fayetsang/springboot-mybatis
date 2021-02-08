@@ -43,7 +43,7 @@ public class CounterServiceImpl implements CounterService {
 
         if (count >= RAISE_NOTIFICATION_THRESHOLD) {
             if (log.isDebugEnabled()) {
-                log.debug("d: {}, count: {}, begin to raise notification.", id, count);
+                log.debug("id: {}, count: {}, begin to raise notification.", id, count);
             }
             noticeService.sendNotification("NOTIFICATION:"+id+":"+count);
         }

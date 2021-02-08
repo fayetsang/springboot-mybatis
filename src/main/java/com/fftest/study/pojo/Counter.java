@@ -9,9 +9,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString
-public class Counter implements Serializable {
-
-    static final long serialVersionUID = 1340400917744356654L;
+public class Counter {
 
     private String id;
     private Integer count;
