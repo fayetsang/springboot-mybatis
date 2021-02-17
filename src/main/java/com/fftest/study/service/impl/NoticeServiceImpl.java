@@ -14,6 +14,8 @@ public class NoticeServiceImpl implements NoticeService {
     private static final String TOPIC_NOTIFICATION = "notification";
 
     private static final String GROUP_ID_1 = "GROUP1";
+    private static final String GROUP_ID_2 = "GROUP2";
+    private static final String GROUP_ID_3 = "GROUP3";
 
     @Autowired
     private KafkaTemplate kafkaTemplate;
@@ -27,9 +29,24 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @KafkaListener(topics = TOPIC_NOTIFICATION, groupId = GROUP_ID_1)
-    public void getNotification(String message) {
-        log.info("enter getNotification");
+    public void getNotificationG1(String message) {
+        log.info("G1 - enter getNotification");
         String[] messages = message.split(":");
-        log.info("get message from kafka: id={}, count={}", messages[1], messages[2]);
+        log.info("G1 - get message from kafka: id={}, count={}", messages[1], messages[2]);
     }
+
+    @KafkaListener(topics = TOPIC_NOTIFICATION, groupId = GROUP_ID_2)
+    public void getNotificationG2(String message) {
+        log.info("G2 - enter getNotification");
+        String[] messages = message.split(":");
+        log.info("G2 - get message from kafka: id={}, count={}", messages[1], messages[2]);
+    }
+
+    @KafkaListener(topics = TOPIC_NOTIFICATION, groupId = GROUP_ID_3)
+    public void getNotificationG3(String message) {
+        log.info("G3 - enter getNotification");
+        String[] messages = message.split(":");
+        log.info("G3 - get message from kafka: id={}, count={}", messages[1], messages[2]);
+    }
+
 }
