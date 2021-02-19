@@ -13,7 +13,9 @@ import java.time.Duration;
 @Slf4j
 public class CounterServiceImpl implements CounterService {
 
-    private static final Integer RAISE_NOTIFICATION_THRESHOLD = 3;
+    private static final Integer RAISE_ALARM_THRESHOLD = 3;
+
+    private static final Integer RAISE_NOTIFICATION_THRESHOLD = 10;
 
     private static final Integer COUNTER_EXPIRE_MINS = 5;
 
@@ -41,11 +43,19 @@ public class CounterServiceImpl implements CounterService {
         redisTemplate.opsForValue().set(id, ++count);
         redisTemplate.expire(id, Duration.ofMinutes(COUNTER_EXPIRE_MINS));
 
-        if (count >= RAISE_NOTIFICATION_THRESHOLD) {
+        if (count >= RAISE_ALARM_THRESHOLD) {
+
             if (log.isDebugEnabled()) {
-                log.debug("id: {}, count: {}, begin to raise notification.", id, count);
+                log.debug("id: {}, count: {}, begin to raise alarm.", id, count);
             }
-            noticeService.sendNotification("NOTIFICATION:"+id+":"+count);
+            noticeService.sendAlarm("ALARM:"+id+":"+count);
+
+            if (count >= RAISE_NOTIFICATION_THRESHOLD) {
+                if (log.isDebugEnabled()) {
+                    log.debug("id: {}, count: {}, begin to raise notification.", id, count);
+                }
+                noticeService.sendNotification("NOTIFICATION:"+id+":"+count);
+            }
         }
     }
 
